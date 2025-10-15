@@ -1,0 +1,102 @@
+<div class="find-replace-modal-overlay" *ngIf="isVisible">
+  <div class="find-replace-modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Find and Replace</h2>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <div class="input-row">
+        <div class="input-group">
+          <label class="input-label">Find</label>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Enter text to find..."
+            [(ngModel)]="findText"
+          />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Replace</label>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Enter replacement text..."
+            [(ngModel)]="replaceText"
+          />
+        </div>
+        <div class="input-group">
+          <label class="input-label">Exclude (optional)</label>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Exclude text containing..."
+            [(ngModel)]="excludeText"
+          />
+        </div>
+      </div>
+
+      <div class="scope-row">
+        <div class="scope-group">
+          <label class="scope-label">Scope</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="scope"
+                value="selection"
+                [(ngModel)]="scope"
+              />
+              <span class="radio-dot"></span>
+              Selection
+            </label>
+            <label class="radio-label">
+              <input
+                type="radio"
+                name="scope"
+                value="all"
+                [(ngModel)]="scope"
+              />
+              All entries
+            </label>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Content type</label>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="All content types"
+            [(ngModel)]="contentType"
+          />
+        </div>
+        <div class="input-group">
+          <label class="input-label">TLF type</label>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="All TLF types"
+            [(ngModel)]="tlfType"
+          />
+        </div>
+      </div>
+
+      <div class="checkbox-row">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            [(ngModel)]="caseSensitive"
+          />
+          <span class="checkbox-mark"></span>
+          Enable case-sensitive text matching with values added in 'Find' and 'Exclude'
+        </label>
+      </div>
+
+      <div class="button-row">
+        <button class="preview-btn" (click)="previewChanges()">
+          <span class="eye-icon">👁</span>
+          Preview Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

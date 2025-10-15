@@ -1,0 +1,121 @@
+<div class="modal-overlay" (click)="onCancel()">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2 class="modal-title">Associate TLFs</h2>
+      <button class="close-btn" (click)="onCancel()">×</button>
+    </div>
+
+    <div class="modal-filters">
+      <div class="search-container">
+        <input
+          type="text"
+          placeholder="Search by LNRD, Output Number, or Title"
+          class="search-input"
+          [(ngModel)]="filters.searchText"
+          (ngModelChange)="onFilterChange()"
+        />
+      </div>
+
+      <div class="filter-row">
+        <div class="filter-item">
+          <label class="filter-label">TLF Type</label>
+          <select
+            class="filter-select"
+            [(ngModel)]="filters.tlfType"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option *ngFor="let type of tlfTypes">{{ type }}</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label class="filter-label">Analysis Set</label>
+          <select
+            class="filter-select"
+            [(ngModel)]="filters.analysisSet"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option *ngFor="let set of analysisSets">{{ set }}</option>
+          </select>
+        </div>
+
+        <div class="filter-item">
+          <label class="filter-label">Unique/Repeat</label>
+          <select
+            class="filter-select"
+            [(ngModel)]="filters.uniqueRepeat"
+            (ngModelChange)="onFilterChange()"
+          >
+            <option *ngFor="let ur of uniqueRepeats">{{ ur }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="info-text">
+        Showing TLFs under the current milestone. Select the ones that you want to associate
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="table-scroll">
+        <table class="tlf-table">
+          <thead>
+            <tr>
+              <th>TLF Type</th>
+              <th>Output number</th>
+              <th>Title text</th>
+              <th>Analysis set</th>
+              <th>Unique or repeat</th>
+              <th>Unique parent ON</th>
+              <th>Selected for Text</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let tlf of filteredTLFs"
+              [class.selected-row]="isSelected(tlf)"
+              (click)="toggleSelection(tlf)"
+            >
+              <td>{{ tlf.tlfType }}</td>
+              <td>{{ tlf.outputNumber }}</td>
+              <td>{{ tlf.title }}</td>
+              <td>{{ tlf.analysisSet }}</td>
+              <td>{{ tlf.uniqueRepeat }}</td>
+              <td>{{ tlf.uniqueParent }}</td>
+              <td class="text-center">
+                <input
+                  type="checkbox"
+                  [checked]="isSelected(tlf)"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleSelection(tlf)"
+                />
+              </td>
+              <td class="text-center">
+                <button class="view-btn">›</button>
+              </td>
+            </tr>
+            <tr *ngIf="filteredTLFs.length === 0">
+              <td colspan="8" class="no-data">No TLFs found matching the filters</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="selection-info">
+        {{ selectedTLFs.length }} TLF(s) selected
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="onCancel()">Cancel</button>
+      <button
+        class="btn-primary"
+        (click)="onSubmit()"
+        [disabled]="selectedTLFs.length === 0"
+      >
+        Submit ({{ selectedTLFs.length }})
+      </button>
+    </div>
+  </div>
+</div>

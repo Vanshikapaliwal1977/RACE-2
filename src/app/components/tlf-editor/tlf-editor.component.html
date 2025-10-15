@@ -1,0 +1,192 @@
+<div class="tlf-editor-container">
+  <header class="header">
+    <div class="left-header">
+      <div class="logo">
+        <span class="logo-text">ThermoFisher</span>
+        <span class="logo-subtext">SCIENTIFIC</span>
+      </div>
+      <div class="app-name">RACE</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn">?</button>
+      <button class="user-btn">SK ▼</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active">Project Management</button>
+    <button class="tab">Deleted Projects</button>
+  </div>
+
+  <div class="breadcrumb">
+    <span>Project management</span>
+    <span class="separator">&lt;</span>
+    <span>TKDEN301</span>
+    <span class="separator">&lt;</span>
+    <span>TOC: Milestone ABC</span>
+    <span class="separator">&lt;</span>
+    <span>TLF Text Editor</span>
+  </div>
+
+  <div class="page-header">
+    <h1 class="page-title">TLF text editor</h1>
+    <div class="milestone-info">
+      <span class="label">Milestone:</span>
+      <span class="value">Milestone ABC</span>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <select class="filter-select">
+        <option>All Content</option>
+      </select>
+      <select class="filter-select">
+        <option>All TLFs</option>
+      </select>
+    </div>
+    <button class="back-btn">← Back to TOC</button>
+  </div>
+
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <span class="toolbar-label">Current output</span>
+      <button class="toolbar-btn">◀</button>
+      <select class="toolbar-select" [(ngModel)]="currentOutput">
+        <option>F12.3.1.3</option>
+      </select>
+      <button class="toolbar-btn">▶</button>
+      <button class="toolbar-icon-btn">✎</button>
+      <span class="toolbar-label">Scope</span>
+      <select class="toolbar-select">
+        <option>Current Selection</option>
+      </select>
+    </div>
+    <div class="toolbar-right">
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search by text elements"
+          [(ngModel)]="searchText"
+          class="search-input"
+        />
+      </div>
+      <div class="menu-container">
+        <button class="menu-btn" (click)="toggleMenu()">⋮</button>
+        <div class="dropdown-menu" *ngIf="showMenu">
+          <button class="dropdown-item" (click)="preview()"><span class="icon">👁</span> Preview</button>
+          <button class="dropdown-item" (click)="findAndReplace()"><span class="icon">🔍</span> Find and replace</button>
+        </div>
+      </div>
+      <button class="publish-btn">📤 Publish</button>
+    </div>
+  </div>
+
+  <div class="footnote-location">
+    <span class="label">Location of footnotes</span>
+    <label class="radio-label">
+      <input
+        type="radio"
+        name="footnote-location"
+        value="current"
+        [(ngModel)]="selectedFootnoteLocation"
+        checked
+      />
+      Current
+    </label>
+    <label class="radio-label">
+      <input
+        type="radio"
+        name="footnote-location"
+        value="first"
+        [(ngModel)]="selectedFootnoteLocation"
+      />
+      First
+    </label>
+    <label class="radio-label">
+      <input
+        type="radio"
+        name="footnote-location"
+        value="last"
+        [(ngModel)]="selectedFootnoteLocation"
+      />
+      Last
+    </label>
+  </div>
+
+  <div class="warning-message">
+    <span class="warning-icon">⚠</span>
+    <span>Programming notes for figures must be edited in Shell Editor</span>
+  </div>
+
+  <div class="table-container">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Classification</th>
+          <th class="sortable">Order ↑↓</th>
+          <th class="sortable">Line ↑↓</th>
+          <th>Justified</th>
+          <th>Text Elements</th>
+          <th>Associated TLFs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let element of textElements">
+          <td>
+            <ng-container *ngIf="element.classification === 'analysis-set'; else normalExpand">
+              <button class="analysis-set-btn">Analysis Set</button>
+            </ng-container>
+            <ng-template #normalExpand>
+              <button class="expand-btn">▼</button>
+            </ng-template>
+          </td>
+          <td class="text-center">{{ element.order }}</td>
+          <td class="text-center">{{ element.line }}</td>
+          <td class="text-center">
+            {{ element.justified }}
+            <button class="dropdown-btn">▼</button>
+          </td>
+          <td class="text-element">{{ element.text }}</td>
+          <td class="associated-tlfs">
+            <div class="tlf-tags">
+              <span class="tlf-count">Associated TLFs {{ getAssociatedCount(element) }}</span>
+              <button class="add-tlf-btn" (click)="openAssociateModal(element.id)">+</button>
+              <div class="tags-container">
+                <span
+                  *ngFor="let tlf of element.associatedTLFs"
+                  class="tlf-tag"
+                  [class.highlighted-tag]="tlf.type === 'highlighted'"
+                >
+                  {{ tlf.label }}
+                  <button
+                    class="remove-tag-btn"
+                    (click)="removeAssociatedTLF(element.id, tlf.id)"
+                  >
+                    ×
+                  </button>
+                </span>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-associate-tlfs-modal
+  *ngIf="showAssociateModal"
+  (close)="closeAssociateModal()"
+  (submit)="onTLFsAssociated($event)"
+></app-associate-tlfs-modal>
+
+<app-preview-modal
+  [isVisible]="showPreviewModal"
+  (close)="closePreviewModal()"
+></app-preview-modal>
+
+<app-find-replace-modal
+  [isVisible]="showFindReplaceModal"
+  (close)="closeFindReplaceModal()"
+></app-find-replace-modal>

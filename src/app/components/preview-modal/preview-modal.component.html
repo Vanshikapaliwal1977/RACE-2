@@ -1,0 +1,22 @@
+<div class="preview-modal-overlay" *ngIf="isVisible">
+  <div class="preview-modal">
+    <div class="modal-header">
+      <h2 class="modal-title">Output T1401001</h2>
+      <button class="close-btn" (click)="closeModal()">×</button>
+    </div>
+    <div class="modal-content">
+      <div class="toc-section">
+        <span class="toc-label">TOC status</span>
+        <button class="new-btn">New</button>
+        <span class="change-label">Change TOC status to current</span>
+        <label class="toggle">
+          <input type="checkbox" [(ngModel)]="tocStatusToggle">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="shell-box">
+        <span class="shell-text">Shell</span>
+      </div>
+    </div>
+  </div>
+</div>
