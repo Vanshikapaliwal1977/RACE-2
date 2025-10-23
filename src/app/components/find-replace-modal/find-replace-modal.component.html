@@ -13,6 +13,7 @@
             class="input-field"
             placeholder="Enter text to find..."
             [(ngModel)]="findText"
+            [attr.title]="findText"
           />
         </div>
         <div class="input-group">
@@ -22,6 +23,7 @@
             class="input-field"
             placeholder="Enter replacement text..."
             [(ngModel)]="replaceText"
+            [attr.title]="replaceText"
           />
         </div>
         <div class="input-group">
@@ -31,6 +33,7 @@
             class="input-field"
             placeholder="Exclude text containing..."
             [(ngModel)]="excludeText"
+            [attr.title]="excludeText"
           />
         </div>
       </div>
@@ -67,6 +70,7 @@
             class="input-field"
             placeholder="All content types"
             [(ngModel)]="contentType"
+            [attr.title]="contentType"
           />
         </div>
         <div class="input-group">
@@ -76,6 +80,7 @@
             class="input-field"
             placeholder="All TLF types"
             [(ngModel)]="tlfType"
+            [attr.title]="tlfType"
           />
         </div>
       </div>
